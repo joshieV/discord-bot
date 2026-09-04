@@ -1,12 +1,14 @@
 import discord
 from discord.ext import commands
-import logging
 from dotenv import load_dotenv
+
+import asyncio
+import logging
 import os
 from pathlib import Path
 
 load_dotenv()
-token = os.getenv("DISCORD_TOKEN")
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 LOG_FILE = Path(__file__).resolve().parent.parent / "discord.log"
 handler = logging.FileHandler(filename=LOG_FILE, encoding="utf-8", mode="w")
@@ -16,83 +18,18 @@ intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-_role = "test_subject"
+COGS = [
+    "cogs.core",
+    "cogs.fun",
+    "cogs.moderation",
+]
 
-@bot.event
-async def on_ready():
-    print(f"Test {bot.user.name}")
+async def main():
+    discord.utils.setup_logging(handler=handler, level=logging.DEBUG, root=False)
 
-@bot.event
-async def on_member_join(member):
-    # DMs the user a welcome message when they join the server
-    await member.send(f"Welcome {member.name} to the server!")
+    async with bot:
+        for cog in COGS:
+            await bot.load_extension(cog)
+        await bot.start(TOKEN)
 
-@bot.event
-async def on_message(message):
-    if message.author == bot.user:
-        return
-
-    if "fudge" in message.content.lower():
-        #Deletes the bad word and replies
-        await message.delete()
-        await message.channel.send(f"{message.author.mention} No bad words please!")
-
-    await bot.process_commands(message)
-
-@bot.command()
-#If !hello in the server is typed the bot will reply back
-async def hello(ctx):
-    await ctx.send(f"Hello {ctx.author.mention}!")
-
-@bot.command()
-#Function for assigning a test role for now
-async def assignrole(ctx):
-    role = discord.utils.get(ctx.guild.roles, name=_role)
-
-    if role:
-        await ctx.author.add_roles(role)
-        await ctx.send(f"{ctx.author.mention} now has {_role} role")
-    else:
-        await ctx.send("This role does not exist!")
-
-@bot.command()
-async def removerole(ctx):
-    role = discord.utils.get(ctx.guild.roles, name=_role)
-
-    if role:
-        await ctx.author.remove_roles(role)
-        await ctx.send(f"{ctx.author.mention} no longer has the {_role} role")
-    else:
-        await ctx.send("This role does not exist!")
-
-@bot.command()
-@commands.has_role(_role)
-async def secret(ctx):
-    await ctx.send("Welcome you test monkey")
-
-@secret.error
-async def secret_error(ctx, error):
-    if isinstance(error, commands.MissingRole):
-        await ctx.send("You dont have permission")
-
-@bot.command()
-async def dm(ctx, *, msg):
-    await ctx.author.send(f"Here is your message from the server -> {msg}")
-
-@bot.command()
-async def reply(ctx):
-    await ctx.reply("This is the reply to your message")
-
-@bot.command()
-async def poll(ctx, *, question):
-    embed = discord.Embed(title="New Poll", description=question)
-    poll_message = await ctx.send(embed=embed)
-    await poll_message.add_reaction("👍")
-    await poll_message.add_reaction("👎")
-
-@bot.command()
-async def sendrepo(ctx):
-    await ctx.send("https://github.com/joshieV/discord-bot")
-
-bot.run(token, log_handler=handler, log_level=logging.DEBUG)
-
+asyncio.run(main())

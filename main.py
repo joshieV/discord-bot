@@ -63,4 +63,15 @@ async def removerole(ctx):
     else:
         await ctx.send("This role does not exist!")
 
+@bot.command()
+@commands.has_role(_role)
+async def secret(ctx):
+    await ctx.send(f"Welcome you test monkey")
+
+@secret.error
+async def secret_error(ctx, error):
+    if isinstance(error, commands.MissingRole):
+        await ctx.send("You dont have permission to do that")
+
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
+

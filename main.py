@@ -18,5 +18,19 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
     print(f"Test {bot.user.name}")
 
+@bot.event
+async def on_member_join(member):
+    await member.send(f"Welcome {member.name} to the server!")
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+
+    if "fudge" in message.content.lower():
+        await message.delete()
+        await message.channel.send(f"{message.author.mention} No bad words please!")
+
+    await bot.process_commands(message)
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)

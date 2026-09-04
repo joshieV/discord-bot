@@ -7,3 +7,7 @@ I am creating a Discord bot in python using discord.py
 - Basic commands
 - Minigames
 - Currency
+
+## Usage of AI
+
+AI was only and will only be used for archetecture of the files since I am a little lazy to get the project started.

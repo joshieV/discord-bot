@@ -3,11 +3,13 @@ from discord.ext import commands
 import logging
 from dotenv import load_dotenv
 import os
+from pathlib import Path
 
 load_dotenv()
 token = os.getenv("DISCORD_TOKEN")
 
-handler = logging.FileHandler(filename="discord.log", encoding="utf-8", mode="w")
+LOG_FILE = Path(__file__).resolve().parent.parent / "discord.log"
+handler = logging.FileHandler(filename=LOG_FILE, encoding="utf-8", mode="w")
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True

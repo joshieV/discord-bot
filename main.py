@@ -88,5 +88,9 @@ async def poll(ctx, *, question):
     await poll_message.add_reaction("👍")
     await poll_message.add_reaction("👎")
 
+@bot.command()
+async def sendrepo(ctx):
+    await ctx.send("https://github.com/joshieV/discord-bot")
+
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
 

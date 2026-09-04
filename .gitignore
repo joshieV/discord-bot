@@ -17,3 +17,7 @@ __pycache__/
 # OS
 Thumbs.db
 Desktop.ini
+
+# Logs
+*.log
+discord.log

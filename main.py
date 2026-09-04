@@ -53,5 +53,14 @@ async def assignrole(ctx):
     else:
         await ctx.send("This role does not exist!")
 
+@bot.command()
+async def removerole(ctx):
+    role = discord.utils.get(ctx.guild.roles, name=_role)
+
+    if role:
+        await ctx.author.remove_roles(role)
+        await ctx.send(f"{ctx.author.mention} no longer has the {_role} role")
+    else:
+        await ctx.send("This role does not exist!")
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)

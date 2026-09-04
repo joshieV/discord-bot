@@ -14,12 +14,15 @@ intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
+_role = "test_subject"
+
 @bot.event
 async def on_ready():
     print(f"Test {bot.user.name}")
 
 @bot.event
 async def on_member_join(member):
+    # DMs the user a welcome message when they join the server
     await member.send(f"Welcome {member.name} to the server!")
 
 @bot.event
@@ -28,9 +31,27 @@ async def on_message(message):
         return
 
     if "fudge" in message.content.lower():
+        #Deletes the bad word and replies
         await message.delete()
         await message.channel.send(f"{message.author.mention} No bad words please!")
 
     await bot.process_commands(message)
+
+@bot.command()
+#If !hello in the server is typed the bot will reply back
+async def hello(ctx):
+    await ctx.send(f"Hello {ctx.author.mention}!")
+
+@bot.command()
+#Function for assigning a test role for now
+async def assignrole(ctx):
+    role = discord.utils.get(ctx.guild.roles, name=_role)
+
+    if role:
+        await ctx.author.add_roles(role)
+        await ctx.send(f"{ctx.author.mention} now has {_role} role")
+    else:
+        await ctx.send("This role does not exist!")
+
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)

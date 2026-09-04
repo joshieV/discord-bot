@@ -1,0 +1,19 @@
+# Secrets — NEVER commit
+.env
+
+# Virtual environment
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# PyCharm
+.idea/
+
+# OS
+Thumbs.db
+Desktop.ini

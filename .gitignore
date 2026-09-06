@@ -21,3 +21,6 @@ Desktop.ini
 # Logs
 *.log
 discord.log
+
+# Word list
+src/data/bad_words.json

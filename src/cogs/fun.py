@@ -67,7 +67,8 @@ class Fun(commands.Cog):
             result = "heads" if flip == 0 else "tails"
 
             await ctx.send("Flipping...")
-            await asyncio.sleep(1)
+            await ctx.send("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXVxOWEzYmw0eTJybDc0ZTg4ejY3Y2xoOGtvNmFjbGtnODRqcnJwcSZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/r9JXEbkaOo12vl9P1I/giphy.gif")
+            await asyncio.sleep(2)
             await ctx.send(f"Landed on {result}")
 
             if guess == result:

@@ -75,7 +75,7 @@ class Fun(commands.Cog):
             else:
                 await ctx.send("Wrong")
 
-        except asyncio.TimeoutError as e:
+        except asyncio.TimeoutError:
             await ctx.send(f"{ctx.author.mention} took too long to respond...")
 
 async def setup(bot):

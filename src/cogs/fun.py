@@ -1,5 +1,8 @@
+import asyncio
+
 import discord
 from discord.ext import commands
+import random
 
 class Fun(commands.Cog):
     def __init__(self, bot):
@@ -37,6 +40,43 @@ class Fun(commands.Cog):
 
         await ctx.send(f"{member.mention} got slapped by {ctx.author.mention}!")
         await ctx.send("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbDV4ZXJzMmRjNmpzZ3d4ZXNpM3dhNzZlMjlhN2g4ejg1ZHEwcGJ2YyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/mEtSQlxqBtWWA/giphy.gif")
+
+    @commands.command()
+    async def coinflip(self, ctx):
+        await ctx.send("Heads or tails?")
+
+        try:
+            response = await self.bot.wait_for(
+                "message",
+                timeout=30.0,
+                check=lambda m: m.author == ctx.author and m.channel == ctx.channel
+            )
+
+            guess = response.content.lower().strip()
+
+            if guess not in ["heads", "tails", "h", "t"]:
+                await ctx.send("Invalid choice, heads / h or tails / t")
+                return
+
+            if guess in ["heads", "h"]:
+                guess = "heads"
+            else:
+                guess = "tails"
+
+            flip = random.randint(0, 1)
+            result = "heads" if flip == 0 else "tails"
+
+            await ctx.send("Flipping...")
+            await asyncio.sleep(1)
+            await ctx.send(f"Landed on {result}")
+
+            if guess == result:
+                await ctx.send("Correct")
+            else:
+                await ctx.send("Wrong")
+
+        except asyncio.TimeoutError as e:
+            await ctx.send(f"{ctx.author.mention} took too long to respond...")
 
 async def setup(bot):
     await bot.add_cog(Fun(bot))

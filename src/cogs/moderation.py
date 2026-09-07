@@ -85,10 +85,21 @@ class Moderation(commands.Cog):
     async def secret(self, ctx):
         await ctx.send("Welcome you test monkey")
 
-    @secret.error
-    async def secret_error(self, ctx, error):
-        if isinstance(error, commands.MissingRole):
-            await ctx.send("You dont have permission")
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def ban(self, ctx, member: discord.Member, *, reason=None):
+        if reason is None:
+            await ctx.send("You cannot ban someone without a reason!")
+        else:
+            await ctx.send(f"{member.mention} has been banned from {ctx.guild.name} for {reason}")
+            await member.ban(reason=reason)
+
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def unban(self, ctx, user_id: int):
+        user = await self.bot.fetch_user(user_id)
+        await ctx.guild.unban(user)
+        await ctx.send(f"{user.name} has been unbanned!")
 
 async def setup(bot):
     await bot.add_cog(Moderation(bot))

@@ -13,6 +13,10 @@ class Fun(commands.Cog):
         await ctx.send("https://github.com/joshieV/discord-bot")
 
     @commands.command()
+    async def github(self, ctx):
+        await ctx.send("https://github.com/joshieV")
+
+    @commands.command()
     #If !hello in the server is typed the bot will reply back
     async def hello(self, ctx):
         await ctx.send(f"Hello {ctx.author.mention}!")

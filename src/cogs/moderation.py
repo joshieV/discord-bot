@@ -47,6 +47,18 @@ class Moderation(commands.Cog):
                     print(e)
                 break
 
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        try:
+            if member.guild.system_channel:
+                await member.guild.system_channel.send(f"Goodbye {member.display_name}")
+        except discord.Forbidden:
+            print(f"Missing permissions to send goodbye message in {member.guild.name}")
+        except discord.HTTPException as e:
+            print(f"Failed to send goodbye message in {member.guild.name}: {e}")
+        except AttributeError:
+            print(f"Guild or system channel not found for {member}")
+
     @commands.command()
     #Function for assigning a test role for now
     async def assignrole(self, ctx):

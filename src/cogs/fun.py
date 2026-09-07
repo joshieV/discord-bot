@@ -79,5 +79,15 @@ class Fun(commands.Cog):
         except asyncio.TimeoutError:
             await ctx.send(f"{ctx.author.mention} took too long to respond...")
 
+    @commands.command()
+    async def hug(self, ctx, member: discord.Member=None):
+        if member is None:
+            await ctx.send("Mention someone to hug them")
+            return
+
+        await ctx.send(f"{ctx.author.mention} hugged {member.mention}")
+        await asyncio.sleep(0.5)
+        await ctx.send("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTQ4aHByeHlzc285NTYxOGIxemd4bjl3Z254YzVvYTZyODEydHZnbyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/42YlR8u9gV5Cw/giphy.gif")
+
 async def setup(bot):
     await bot.add_cog(Fun(bot))

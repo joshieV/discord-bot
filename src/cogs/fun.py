@@ -84,6 +84,39 @@ class Fun(commands.Cog):
             await ctx.send(f"{ctx.author.mention} took too long to respond...")
 
     @commands.command()
+    async def diceroll(self, ctx):
+        await ctx.send("Choose a number 1-6")
+
+        try:
+            response = await self.bot.wait_for(
+                "message",
+                timeout=30,
+                check = lambda m: m.author == ctx.author and m.channel == ctx.channel
+            )
+
+            guess = response.content.lower().strip()
+
+            if guess not in ["1", "2", "3", "4", "5", "6"]:
+                await ctx.send("You must enter a number from 1-6")
+                return
+
+            guess = int(guess)
+            diceroll = random.randint(1, 6)
+
+            await ctx.send(f"Rolling...")
+            await ctx.send("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2w1aGZtbHRjcmNzbG1vODk0cXVhZTk5N28weWt3YTcydGZwb3hzMSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xUNd9SGJyeYi2HQL3W/giphy.gif")
+            await asyncio.sleep(2)
+            await ctx.send(f"Landed on {diceroll}")
+
+            if guess == diceroll:
+                await ctx.send(f"{ctx.author.mention} guessed correctly")
+            else:
+                await ctx.send(f"{ctx.author.mention} incorrect, try again!")
+        except asyncio.TimeoutError:
+            await ctx.send(f"{ctx.author.mention} took too long to respond...")
+
+
+    @commands.command()
     async def hug(self, ctx, member: discord.Member=None):
         if member is None:
             await ctx.send("Mention someone to hug them")

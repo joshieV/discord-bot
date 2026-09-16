@@ -101,5 +101,16 @@ class Moderation(commands.Cog):
         await ctx.guild.unban(user)
         await ctx.send(f"{user.name} has been unbanned!")
 
+    @commands.command()
+    @commands.has_guild_permissions(administrator=True)
+    async def kick(self, ctx, member: discord.Member, *, reason=None):
+        if reason is None:
+            await ctx.send("You cannot kick someone without a reason!")
+        else:
+            await ctx.send(f"{member.mention} has been kicked from {ctx.guild.name} for {reason}")
+            await member.kick(reason=reason)
+
+
+
 async def setup(bot):
     await bot.add_cog(Moderation(bot))

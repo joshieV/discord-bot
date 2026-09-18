@@ -13,7 +13,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 if TOKEN is None:
     raise RuntimeError("DISCORD_TOKEN is not in the .env file")
 
-LOG_FILE = Path(__file__).resolve().parent.parent / "discord.log"
+LOG_FILE = Path(__file__).resolve().parent / "discord.log"
 handler = logging.FileHandler(filename=LOG_FILE, encoding="utf-8", mode="w")
 intents = discord.Intents.default()
 intents.message_content = True
